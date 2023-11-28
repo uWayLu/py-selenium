@@ -1,3 +1,4 @@
+from pyvirtualdisplay import Display
 from selenium import webdriver
 # from selenium.webdriver.chrome.service import Service
 # from selenium.webdriver.support.ui import WebDriverWait
@@ -8,7 +9,7 @@ import json
 # import os
 import time
 
-# 輸入PDF保存的路徑
+# from argvs
 from_url = argv[1]
 save_dir = argv[2]
 # service = Service(executable_path = os.getenv('BROWSER'))
@@ -32,9 +33,15 @@ prefs = {
 }
 chrome_options.add_experimental_option('prefs', prefs)
 chrome_options.add_argument('--kiosk-printing')
+chrome_options.add_argument('--window-size=1280,720')
+chrome_options.add_argument('--disable-gpu')
 chrome_options.add_experimental_option("detach", True)
 
-# 輸入chromedriver的路徑
+# xvfb
+display = Display(visible=0, size=(900, 600))
+display.start()
+
+# selenium
 driver = webdriver.Chrome(options=chrome_options)
 driver.implicitly_wait(30)
 
@@ -61,3 +68,4 @@ print(f'savedir path: {save_dir}')
 
 time.sleep(30)
 driver.quit()
+display.stop()
