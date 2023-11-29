@@ -35,6 +35,7 @@ chrome_options.add_experimental_option('prefs', prefs)
 chrome_options.add_argument('--kiosk-printing')
 chrome_options.add_argument('--window-size=1280,720')
 chrome_options.add_argument('--disable-gpu')
+chrome_options.add_argument('--no-sandbox')
 chrome_options.add_experimental_option("detach", True)
 
 # xvfb
