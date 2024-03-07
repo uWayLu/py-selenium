@@ -1,9 +1,9 @@
 from pyvirtualdisplay import Display
 from selenium import webdriver
 # from selenium.webdriver.chrome.service import Service
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from sys import argv
 import json
 # import os
@@ -12,6 +12,7 @@ import time
 # from argvs
 from_url = argv[1]
 save_dir = argv[2]
+wait_for_print = int(argv[3]) if len(argv) > 3 else 60
 # service = Service(executable_path = os.getenv('BROWSER'))
 # service = Service(executable_path = r'./bin/chromedriver')
 
@@ -39,14 +40,16 @@ chrome_options.add_argument('--no-sandbox')
 chrome_options.add_experimental_option("detach", True)
 
 # xvfb
-display = Display(visible=0, size=(900, 600))
+display = Display(visible=1, size=(900, 600))
 display.start()
 
 # selenium
 driver = webdriver.Chrome(options=chrome_options)
-driver.implicitly_wait(30)
+# driver.implicitly_wait(30)
 
 driver.get(from_url)
+wait = WebDriverWait(driver, 60)
+element = wait.until(EC.visibility_of_element_located((By.ID, 'ckeditor-status')))
 
 # try:
 #     myElem = WebDriverWait(driver, delay = 3).until(EC.presence_of_element_located((By.ID, 'IdOfMyElement')))
@@ -67,6 +70,6 @@ customjs="""
 driver.execute_script(customjs)
 print(f'savedir path: {save_dir}')
 
-time.sleep(30)
+time.sleep(wait_for_print)
 driver.quit()
 display.stop()
