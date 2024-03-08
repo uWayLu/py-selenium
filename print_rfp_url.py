@@ -18,19 +18,17 @@ wait_for_print = int(argv[3]) if len(argv) > 3 else 60
 
 chrome_options = webdriver.ChromeOptions()
 appState = {
-   'recentDestinations': [
-      {
-           'id': 'Save as PDF',
-           'origin': 'local',
-           'account': ''
-      }
-  ],
-   'selectedDestinationId': 'Save as PDF',
-   'version': 2,
+    'recentDestinations': [{
+        'id': 'Save as PDF',
+        'origin': 'local',
+        'account': ''
+    }],
+    'selectedDestinationId': 'Save as PDF',
+    'version': 2,
 }
 prefs = {
-   'printing.print_preview_sticky_settings.appState': json.dumps(appState), 
-   'savefile.default_directory': save_dir
+    'printing.print_preview_sticky_settings.appState': json.dumps(appState),
+    'savefile.default_directory': save_dir
 }
 chrome_options.add_experimental_option('prefs', prefs)
 chrome_options.add_argument('--kiosk-printing')
@@ -47,29 +45,26 @@ display.start()
 driver = webdriver.Chrome(options=chrome_options)
 # driver.implicitly_wait(30)
 
-driver.get(from_url)
-wait = WebDriverWait(driver, 60)
-element = wait.until(EC.visibility_of_element_located((By.ID, 'ckeditor-status')))
+try:
+    driver.get(from_url)
+    wait = WebDriverWait(driver, 60)
+    element = wait.until(
+        EC.visibility_of_element_located((By.ID, 'ckeditor-status')))
 
-# try:
-#     myElem = WebDriverWait(driver, delay = 3).until(EC.presence_of_element_located((By.ID, 'IdOfMyElement')))
-#     print('ready')
-# except TimeoutException:
-#     print(r'timeout')
-# time.sleep(3)
+    customjs = """
+      var timer = setInterval(() => {
+        console.log(window.status)
+        if (window.status === 'ready') {
+          clearInterval(timer)
+          window.print();
+        }
+      }, 1000);
+    """
+    driver.execute_script(customjs)
+    print(f'savedir path: {save_dir}')
 
-customjs="""
-  var timer = setInterval(() => {
-    console.log(window.status)
-    if (window.status === 'ready') {
-      clearInterval(timer)
-      window.print();
-    }
-  }, 1000);
-"""
-driver.execute_script(customjs)
-print(f'savedir path: {save_dir}')
+    time.sleep(wait_for_print)
 
-time.sleep(wait_for_print)
-driver.quit()
-display.stop()
+finally:
+    driver.quit()
+    display.stop()
