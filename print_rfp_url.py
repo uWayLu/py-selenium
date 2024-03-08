@@ -40,7 +40,7 @@ chrome_options.add_argument('--no-sandbox')
 chrome_options.add_experimental_option("detach", True)
 
 # xvfb
-display = Display(visible=1, size=(900, 600))
+display = Display(visible=0, size=(900, 600))
 display.start()
 
 # selenium
