@@ -65,6 +65,9 @@ try:
 
     time.sleep(wait_for_print)
 
+except e:
+    print('An error occurred: ', e)
+
 finally:
     driver.quit()
     display.stop()
