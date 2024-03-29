@@ -25,6 +25,7 @@ appState = {
     }],
     'selectedDestinationId': 'Save as PDF',
     'version': 2,
+    "isHeaderFooterEnabled": False
 }
 prefs = {
     'printing.print_preview_sticky_settings.appState': json.dumps(appState),
