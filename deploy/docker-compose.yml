@@ -1,0 +1,15 @@
+services:
+  py-selenium:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5900:5900"
+      - "4444:4444"
+    shm_size: "4g"
+    ulimits:
+      nofile:
+        soft: 32768
+        hard: 32768
+    volumes:
+      - ../storage:/usr/src/app/storage
