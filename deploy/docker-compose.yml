@@ -1,5 +1,6 @@
 services:
   py-selenium:
+    user: seluser
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,4 +13,4 @@ services:
         soft: 32768
         hard: 32768
     volumes:
-      - ../storage:/usr/src/app/storage
+      - ${PRINT_TO_DIR:-../storage}:/usr/src/app/storage
